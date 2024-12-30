@@ -83,7 +83,6 @@ const Profile = () => {
         </View>
 
         <View className="flex flex-col mt-10">
-          <SettingsItem icon={icons.calendar} title="My Bookings" />
           <SettingsItem icon={icons.wallet} title="Payments" />
         </View>
 

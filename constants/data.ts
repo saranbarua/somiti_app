@@ -84,14 +84,7 @@ export const settings = [
     title: "Notifications",
     icon: icons.bell,
   },
-  {
-    title: "Security",
-    icon: icons.shield,
-  },
-  {
-    title: "Language",
-    icon: icons.language,
-  },
+
   {
     title: "Help Center",
     icon: icons.info,
