@@ -20,6 +20,9 @@ module.exports = {
         accent: {
           100: "#FBFBFD",
         },
+        sky: {
+          100: "#0ea5e9",
+        },
         black: {
           DEFAULT: "#000000",
           100: "#8C8E98",
