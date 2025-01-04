@@ -108,20 +108,20 @@ const SignUp = () => {
             onChangeText={(value) => handleInputChange("fullName", value)}
           />
           <InputField
-            label="Fathers Name"
-            placeholder="Enter fathers name"
+            label="Father's Name"
+            placeholder="Enter father's name"
             value={form.fathersName}
             onChangeText={(value) => handleInputChange("fathersName", value)}
           />
           <InputField
-            label="Mothers Name"
-            placeholder="Enter mothers name"
+            label="Mother's Name"
+            placeholder="Enter mother's name"
             value={form.mothersName}
             onChangeText={(value) => handleInputChange("mothersName", value)}
           />
           <InputField
-            label="Husbands Name"
-            placeholder="Enter husbands name"
+            label="Husband's Name"
+            placeholder="Enter husband's name"
             value={form.husbandsName}
             onChangeText={(value) => handleInputChange("husbandsName", value)}
           />
