@@ -14,11 +14,14 @@ const SignUp = () => {
     fullName: "",
     fathersName: "",
     mothersName: "",
+    husbandsName: "",
     dateOfBirth: "",
     mobileNumberBD: "",
     permanentAddress: "",
     presentAddress: "",
     mobileNumberSA: "",
+    bloodGroup: "",
+    refererName: "",
     workAddress: "",
     religion: "",
     maritalStatus: "",
@@ -32,21 +35,6 @@ const SignUp = () => {
 
   //image added
   const [profileImg, setProfileImg] = useState<string | null>(null);
-
-  // const pickImage = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ["images", "videos"],
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   console.log(result);
-
-  //   if (!result.canceled) {
-  //     setImage(result.assets[0].uri);
-  //   }
-  // };
   const pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -91,7 +79,7 @@ const SignUp = () => {
       const result = await response.json();
       if (response.ok) {
         setShowSuccessModal(true);
-        console.log("Sign-Up Success:", result);
+        // console.log("Sign-Up Success:", result);
       } else {
         console.error("API Error:", result);
         Alert.alert("Error", result.message || "Something went wrong");
@@ -105,7 +93,7 @@ const SignUp = () => {
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
-        <Text className="text-2xl px-3 text-primary-100 font-rubik-semibold  ">
+        <Text className="text-2xl px-3 text-primary-100 font-rubik-semibold ">
           Create Your Account
         </Text>
         <View className="p-5">
@@ -126,6 +114,12 @@ const SignUp = () => {
             placeholder="Enter mothers name"
             value={form.mothersName}
             onChangeText={(value) => handleInputChange("mothersName", value)}
+          />
+          <InputField
+            label="Husbands Name"
+            placeholder="Enter husbands name"
+            value={form.husbandsName}
+            onChangeText={(value) => handleInputChange("husbandsName", value)}
           />
           <InputField
             label="Date of Birth"
@@ -179,10 +173,22 @@ const SignUp = () => {
             onChangeText={(value) => handleInputChange("maritalStatus", value)}
           />
           <InputField
-            label="National ID Number"
+            label="National ID"
             placeholder="Enter id card number"
             value={form.nationalIDNo}
             onChangeText={(value) => handleInputChange("nationalIDNo", value)}
+          />
+          <InputField
+            label="Blood Group"
+            placeholder="Enter your blood group"
+            value={form.bloodGroup}
+            onChangeText={(value) => handleInputChange("bloodGroup", value)}
+          />
+          <InputField
+            label="Referer Name"
+            placeholder="Enter Refer Name"
+            value={form.refererName}
+            onChangeText={(value) => handleInputChange("refererName", value)}
           />
           <InputField
             label="Password"
@@ -215,35 +221,17 @@ const SignUp = () => {
             <Text className="text-primary-500">Log In</Text>
           </Link>
         </View>
-        <ReactNativeModal>
-          <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px]">
-            <Text className="font-JakartaExtraBold text-2xl mb-2">
-              Verification
-            </Text>
-            <Text className="font-Jakarta mb-5">
-              We've sent a verification code to sarnabrua@gmail.com.
-              {/* We've sent a
-              verification code to {form.email}. */}
-            </Text>
-
-            <Button
-              title="Verify Email"
-              // onPress={onPressVerify}
-              className="mt-5 bg-success-500"
-            />
-          </View>
-        </ReactNativeModal>
         <ReactNativeModal isVisible={showSuccessModal}>
           <View className="bg-white px-7 py-9 rounded-2xl min-h-[300px]">
             <Image
-              source={images.map}
+              source={images.check}
               className="w-[110px] h-[110px] mx-auto my-5"
             />
             <Text className="text-3xl font-JakartaBold text-center">
-              Verified
+              Application Accepted
             </Text>
             <Text className="text-base text-gray-400 font-Jakarta text-center mt-2">
-              You have successfully verified your account.
+              Member application taken. Wait for the confirmation.
             </Text>
             <Button
               title="Browse Home"

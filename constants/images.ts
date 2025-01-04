@@ -8,7 +8,7 @@ import japan from "@/assets/images/japan.png";
 import cardGradient from "@/assets/images/card-gradient.png";
 import barChart from "@/assets/images/bar-chart.png";
 import whiteGradient from "@/assets/images/white-gradient.png";
-import map from "@/assets/images/map.png";
+import check from "@/assets/images/check.png";
 import noResult from "@/assets/images/no-result.png";
 
 export default {
@@ -16,12 +16,12 @@ export default {
   onboarding2,
   onboarding3,
   avatar,
+  check,
   newYork,
   japan,
   cardGradient,
   barChart,
   whiteGradient,
-  map,
   noResult,
   cars,
 };
