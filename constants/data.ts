@@ -21,7 +21,7 @@ export const onboarding = [
     title: "Your ride, your way. Let's go!",
     description:
       "Enter your destination, sit back, and let us take care of the rest.",
-    image: images.whiteGradient,
+    image: images.onboarding,
   },
 ];
 
