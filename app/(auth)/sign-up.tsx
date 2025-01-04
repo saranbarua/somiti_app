@@ -7,6 +7,7 @@ import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { ReactNativeModal } from "react-native-modal";
+import * as ImagePicker from "expo-image-picker";
 
 // import { fetchAPI } from "@/lib/fetch";
 
@@ -81,6 +82,23 @@ const SignUp = () => {
   //     });
   //   }
   // };
+  const [image, setImage] = useState<string | null>(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      // allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
@@ -141,6 +159,20 @@ const SignUp = () => {
             // value={form.password}
             // onChangeText={(value) => setForm({ ...form, password: value })}
           />
+
+          <Button
+            title="Pick an image from camera roll"
+            bgVariant={"secondary"}
+            onPress={pickImage}
+          />
+          <View className=" p-4">
+            {image && (
+              <Image
+                source={{ uri: image }}
+                style={{ width: 300, height: 400 }}
+              />
+            )}
+          </View>
           <Button
             title="Sign Up"
             // onPress={onSignUpPress}
