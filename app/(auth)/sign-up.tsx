@@ -4,12 +4,14 @@ import InputField from "@/components/InputField/InputField";
 import images from "@/constants/images";
 import { Link, router } from "expo-router";
 import { useState } from "react";
+
 import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { ReactNativeModal } from "react-native-modal";
 import * as ImagePicker from "expo-image-picker";
 
 const SignUp = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
     fathersName: "",
@@ -52,6 +54,7 @@ const SignUp = () => {
     }
   };
   const onSignUpPress = async () => {
+    setIsLoading(true);
     const formData = new FormData();
     Object.entries(form).forEach(([key, value]) => {
       formData.append(key, value);
@@ -87,9 +90,10 @@ const SignUp = () => {
     } catch (error) {
       console.error("Network Error:", error);
       Alert.alert("Error", "Unable to sign up. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
-
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
@@ -168,7 +172,7 @@ const SignUp = () => {
           />
           <InputField
             label="Marital Status"
-            placeholder="Enter marital status"
+            placeholder="Yes/No"
             value={form.maritalStatus}
             onChangeText={(value) => handleInputChange("maritalStatus", value)}
           />
@@ -213,6 +217,7 @@ const SignUp = () => {
             )}
           </View>
           <Button title="Sign Up" onPress={onSignUpPress} className="mt-6" />
+
           <Link
             href="/sign-in"
             className="text-lg text-center text-general-200 mt-10"
