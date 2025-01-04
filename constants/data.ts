@@ -1,38 +1,27 @@
 import icons from "./icons";
 import images from "./images";
 
-export const cards = [
+export const onboarding = [
   {
-    title: "Card 1",
-    location: "Location 1",
-    price: "$100",
-    rating: 4.8,
-    category: "house",
-    image: images.newYork,
+    id: 1,
+    title: "The perfect ride is just a tap away!",
+    description:
+      "Your journey begins with Ryde. Find your ideal ride effortlessly.",
+    image: images.onboarding,
   },
   {
-    title: "Card 2",
-    location: "Location 2",
-    price: "$200",
-    rating: 3,
-    category: "house",
+    id: 2,
+    title: "Best car in your hands with Ryde",
+    description:
+      "Discover the convenience of finding your perfect ride with Ryde",
     image: images.japan,
   },
   {
-    title: "Card 3",
-    location: "Location 3",
-    price: "$300",
-    rating: 2,
-    category: "flat",
-    image: images.newYork,
-  },
-  {
-    title: "Card 4",
-    location: "Location 4",
-    price: "$400",
-    rating: 5,
-    category: "villa",
-    image: images.japan,
+    id: 3,
+    title: "Your ride, your way. Let's go!",
+    description:
+      "Enter your destination, sit back, and let us take care of the rest.",
+    image: images.whiteGradient,
   },
 ];
 
