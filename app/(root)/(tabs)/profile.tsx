@@ -11,6 +11,8 @@ import {
 import icons from "@/constants/icons";
 import { settings } from "@/constants/data";
 import images from "@/constants/images";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 interface SettingsItemProp {
   icon: ImageSourcePropType;
@@ -54,6 +56,11 @@ const Profile = () => {
   //     Alert.alert("Error", "Failed to logout");
   //   }
   // };
+  const onLogout = async () => {
+    await AsyncStorage.removeItem("authToken");
+    await AsyncStorage.removeItem("userDetails");
+    router.push("/sign-in"); // Redirect to sign-in page
+  };
 
   return (
     <SafeAreaView className="h-full bg-white">
@@ -97,6 +104,7 @@ const Profile = () => {
             title="Logout"
             textStyle="text-danger"
             showArrow={false}
+            onPress={onLogout}
           />
         </View>
       </ScrollView>

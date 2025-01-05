@@ -1,6 +1,7 @@
 import Button from "@/components/Button/Button";
 import InputField from "@/components/InputField/InputField";
 import images from "@/constants/images";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
@@ -48,6 +49,38 @@ const SignIn = () => {
       setIsLoading(false);
     }
   };
+  // const onSignInPress = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await fetch(
+  //       "https://chattogram-somiti.makeupcoders.com/api/member/login",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(form), // Sending JSON data
+  //       }
+  //     );
+
+  //     const result = await response.json();
+  //     if (response.ok) {
+  //       // Store authentication data
+  //       await AsyncStorage.setItem("authToken", result.token); // Adjust key based on API response
+  //       await AsyncStorage.setItem("userDetails", JSON.stringify(result.user)); // Store user details, if any
+
+  //       setShowSuccessModal(true);
+  //     } else {
+  //       console.error("API Error:", result);
+  //       Alert.alert("Error", result.message || "Invalid credentials");
+  //     }
+  //   } catch (error) {
+  //     console.error("Network Error:", error);
+  //     Alert.alert("Error", "Unable to sign in. Please try again.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <View className="flex-1 bg-white justify-center px-6">
