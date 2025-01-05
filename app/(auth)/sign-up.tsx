@@ -96,6 +96,11 @@ const SignUp = () => {
   };
   return (
     <ScrollView className="flex-1 bg-white">
+      <Image
+        source={images.SignUpBanner}
+        style={{ width: "100%", height: 300, resizeMode: "center" }}
+        className="mb-8"
+      />
       <View className="flex-1 bg-white">
         <Text className="text-2xl px-3 text-primary-100 font-rubik-semibold ">
           Create Your Account

@@ -1,5 +1,4 @@
 import onboarding from "@/assets/images/onbarding.jpg";
-import cars from "@/assets/images/onboarding.png";
 import onboarding2 from "@/assets/images/onboarding2.jpg";
 import onboarding3 from "@/assets/images/onboarding3.jpg";
 import avatar from "@/assets/images/avatar.png";
@@ -9,7 +8,8 @@ import cardGradient from "@/assets/images/card-gradient.png";
 import barChart from "@/assets/images/bar-chart.png";
 import whiteGradient from "@/assets/images/white-gradient.png";
 import check from "@/assets/images/check.png";
-import noResult from "@/assets/images/no-result.png";
+import SignInBanner from "@/assets/images/no-result.png";
+import SignUpBanner from "@/assets/images/adaptive-icon.png";
 
 export default {
   onboarding,
@@ -22,6 +22,6 @@ export default {
   cardGradient,
   barChart,
   whiteGradient,
-  noResult,
-  cars,
+  SignInBanner,
+  SignUpBanner,
 };
