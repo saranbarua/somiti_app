@@ -15,29 +15,30 @@ const SignIn = () => {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const handleInputChange = (name, value) => {
+  const handleInputChange = (name: string, value: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const onSignInPress = async () => {
     setIsLoading(true);
-
     try {
       const response = await fetch(
-        "https://chattogram-somiti.makeupcoders.com/api/auth/signin",
+        "https://chattogram-somiti.makeupcoders.com/api/member/login",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(form),
+          body: JSON.stringify(form), // Sending JSON data
         }
       );
 
       const result = await response.json();
       if (response.ok) {
         setShowSuccessModal(true);
+        // Navigate or save token
       } else {
+        console.error("API Error:", result);
         Alert.alert("Error", result.message || "Invalid credentials");
       }
     } catch (error) {
@@ -84,7 +85,8 @@ const SignIn = () => {
         href="/sign-up"
         className="text-lg text-center text-general-200 mt-5"
       >
-        Don’t have an account? <Text className="text-primary-500">Sign Up</Text>
+        Don’t have an account?{" "}
+        <Text className="text-primary-100 font-rubik-semibold">Sign Up</Text>
       </Link>
 
       <ReactNativeModal isVisible={showSuccessModal}>
