@@ -16,7 +16,8 @@ const Home = () => {
     <SafeAreaView className="flex h-full items-center justify-between bg-white">
       <TouchableOpacity
         onPress={() => {
-          router.replace("/(auth)/sign-up");
+          // router.replace("/(auth)/sign-up");
+          router.replace("/(root)/(tabs)/home");
         }}
         className="w-full flex justify-end items-end p-5"
       >
@@ -35,7 +36,7 @@ const Home = () => {
         onIndexChanged={(index) => setActiveIndex(index)}
       >
         {onboarding.map((item) => (
-          <View key={item.id} className="flex items-center justify-center p-5">
+          <View key={item.id} className="flex items-center justify-center p-2">
             <Image
               source={item.image}
               className="w-full h-[300px]"
