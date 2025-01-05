@@ -17,7 +17,6 @@ const Home = () => {
       <TouchableOpacity
         onPress={() => {
           router.replace("/(auth)/sign-in");
-          // router.replace("/(root)/(tabs)/home");
         }}
         className="w-full flex justify-end items-end p-5"
       >
