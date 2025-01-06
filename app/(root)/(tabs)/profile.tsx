@@ -6,14 +6,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Modal,
 } from "react-native";
 
 import icons from "@/constants/icons";
 import { settings } from "@/constants/data";
 import images from "@/constants/images";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import useAuthStore from "@/store/authStore";
+import { useState } from "react";
 
 interface SettingsItemProp {
   icon: ImageSourcePropType;
@@ -46,21 +47,17 @@ const SettingsItem = ({
 );
 
 const Profile = () => {
-  // const { user, refetch } = useGlobalContext();
   const { logout } = useAuthStore();
+  const [isModalVisible, setIsModalVisible] = useState(false); // Modal visibility state
 
-  // const handleLogout = async () => {
-  //   const result = await logout();
-  //   if (result) {
-  //     Alert.alert("Success", "Logged out successfully");
-  //     refetch();
-  //   } else {
-  //     Alert.alert("Error", "Failed to logout");
-  //   }
-  // };
   const onLogout = async () => {
     await logout();
     router.push("/sign-in"); // Redirect to sign-in page
+  };
+
+  const confirmLogout = () => {
+    setIsModalVisible(false);
+    onLogout();
   };
 
   return (
@@ -105,10 +102,42 @@ const Profile = () => {
             title="Logout"
             textStyle="text-danger"
             showArrow={false}
-            onPress={onLogout}
+            onPress={() => setIsModalVisible(true)} // Show modal on press
           />
         </View>
       </ScrollView>
+
+      {/* Modal for logout confirmation */}
+      <Modal
+        visible={isModalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black opacity-80">
+          <View className="bg-white rounded-lg p-6 w-80">
+            <Text className="text-lg font-rubik-semibold mb-4">
+              Are you sure you want to logout?
+            </Text>
+            <View className="flex flex-row justify-between">
+              <TouchableOpacity
+                onPress={() => setIsModalVisible(false)}
+                className="bg-gray-200 p-3 rounded-lg"
+              >
+                <Text className="text-lg font-rubik-medium">Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={confirmLogout}
+                className="bg-red-500 p-3 rounded-lg"
+              >
+                <Text className="text-lg font-rubik-medium text-white">
+                  Logout
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
