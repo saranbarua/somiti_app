@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import { ReactNativeModal } from "react-native-modal";
 import axios from "axios";
+import PasswordInput from "@/components/InputField/PasswordInput";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +41,10 @@ const SignIn = () => {
         setShowSuccessModal(true);
         if (result.success) {
           login(result.token);
+          setTimeout(() => {
+            setShowSuccessModal(false);
+            router.push(`/(root)/(tabs)/home`);
+          }, 2000);
         }
       } else {
         console.error("API Error:", result);
@@ -79,17 +84,25 @@ const SignIn = () => {
         label="Mobile Number"
         placeholder="Enter your mobile number"
         value={form.mobileNumber}
-        onChangeText={(value) => handleInputChange("mobileNumber", value)}
+        onChangeText={(value: string) =>
+          handleInputChange("mobileNumber", value)
+        }
         keyboardType="phone-pad"
       />
-      <InputField
+      {/* <InputField
         label="Password"
         placeholder="Enter your password"
         secureTextEntry={true}
         value={form.password}
-        onChangeText={(value) => handleInputChange("password", value)}
+        onChangeText={(value: string) => handleInputChange("password", value)}
+      /> */}
+      <PasswordInput
+        label="Password"
+        placeholder="Enter your password"
+        secureTextEntry={true}
+        value={form.password}
+        onChangeText={(value: string) => handleInputChange("password", value)}
       />
-
       <Button
         title={isLoading ? "Signing In..." : "Sign In"}
         onPress={onSignInPress}

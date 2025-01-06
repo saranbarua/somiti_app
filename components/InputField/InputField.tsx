@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform,
 } from "react-native";
 
 import { InputFieldProps } from "@/types/type";
