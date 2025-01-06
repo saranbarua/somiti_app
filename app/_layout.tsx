@@ -33,6 +33,7 @@ export default function RootLayout() {
     "Rubik-Medium": require("../assets/fonts/Rubik-Medium.ttf"),
     "Rubik-Regular": require("../assets/fonts/Rubik-Regular.ttf"),
     "Rubik-SemiBold": require("../assets/fonts/Rubik-SemiBold.ttf"),
+    "Rubik-Bangla": require("../assets/fonts/Abu-Sayed.ttf"),
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
