@@ -82,7 +82,6 @@ const SignUp = () => {
       const result = await response.json();
       if (response.ok) {
         setShowSuccessModal(true);
-        // console.log("Sign-Up Success:", result);
       } else {
         console.error("API Error:", result);
         Alert.alert("Error", result.message || "Something went wrong");

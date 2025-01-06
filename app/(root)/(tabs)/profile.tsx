@@ -13,6 +13,7 @@ import { settings } from "@/constants/data";
 import images from "@/constants/images";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import useAuthStore from "@/store/authStore";
 
 interface SettingsItemProp {
   icon: ImageSourcePropType;
@@ -46,6 +47,7 @@ const SettingsItem = ({
 
 const Profile = () => {
   // const { user, refetch } = useGlobalContext();
+  const { logout } = useAuthStore();
 
   // const handleLogout = async () => {
   //   const result = await logout();
@@ -57,8 +59,7 @@ const Profile = () => {
   //   }
   // };
   const onLogout = async () => {
-    await AsyncStorage.removeItem("authToken");
-    await AsyncStorage.removeItem("userDetails");
+    await logout();
     router.push("/sign-in"); // Redirect to sign-in page
   };
 

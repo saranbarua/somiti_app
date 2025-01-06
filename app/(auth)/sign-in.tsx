@@ -1,6 +1,7 @@
 import Button from "@/components/Button/Button";
 import InputField from "@/components/InputField/InputField";
 import images from "@/constants/images";
+import useAuthStore from "@/store/authStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, router } from "expo-router";
 import { useState } from "react";
@@ -13,6 +14,7 @@ const SignIn = () => {
     mobileNumber: "",
     password: "",
   });
+  const { login, token } = useAuthStore();
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -35,9 +37,12 @@ const SignIn = () => {
       );
 
       const result = await response.json();
+
       if (response.ok) {
         setShowSuccessModal(true);
-        // Navigate or save token
+        if (result.success) {
+          login(result.token);
+        }
       } else {
         console.error("API Error:", result);
         Alert.alert("Error", result.message || "Invalid credentials");
