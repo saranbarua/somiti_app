@@ -1,7 +1,4 @@
 import { Redirect } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
 import useAuthStore from "@/store/authStore";
 
 export default function Home() {

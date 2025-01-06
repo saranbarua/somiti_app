@@ -2,7 +2,13 @@ import TableHeader from "@/components/TextForm/TableHeader";
 import useAuthStore from "@/store/authStore";
 import { Subscription, SubscriptionResponse } from "@/types/type";
 import { useEffect, useState } from "react";
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -93,7 +99,7 @@ export default function Home() {
         Monthly Fee Details
       </Text>
       {isLoading ? (
-        <Text className="text-center text-gray-500">Loading...</Text>
+        <ActivityIndicator size="large" className="text-primary-100" />
       ) : (
         <FlatList
           data={subscriptions}

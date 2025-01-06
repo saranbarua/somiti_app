@@ -41,7 +41,7 @@ export default function RootLayout() {
         name="index"
         options={{ headerShown: false }}
         initialParams={{
-          redirectTo: isAuthenticated ? "(root)/home" : "(auth)/welcome",
+          redirectTo: isAuthenticated ? "(root)/home" : "/(auth)/welcome",
         }}
       />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />

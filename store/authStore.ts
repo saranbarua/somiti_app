@@ -42,8 +42,8 @@ const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: "auth-storage", // Storage key
-      storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage for persistence
+      name: "auth-storage",
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );
