@@ -21,7 +21,7 @@ export default function RootLayout() {
   useEffect(() => {
     // Check authentication status on app load
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
   useEffect(() => {
     // Hide the splash screen once fonts are loaded

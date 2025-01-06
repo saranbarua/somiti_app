@@ -1,4 +1,7 @@
 import TableHeader from "@/components/TextForm/TableHeader";
+import useAuthStore from "@/store/authStore";
+import { Subscription, SubscriptionResponse } from "@/types/type";
+import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, FlatList } from "react-native";
 
 const styles = StyleSheet.create({
@@ -10,111 +13,57 @@ const styles = StyleSheet.create({
 });
 
 export default function Home() {
-  const subscriptionData = {
-    success: true,
-    data: [
-      {
-        notes: "",
-        _id: "677121131aa769633afc022a",
-        member: {
-          _id: "6763c172af58289ed7645403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "paid",
-      },
-      {
-        notes: "",
-        _id: "677121131aa769633afc022a1a",
-        member: {
-          _id: "6763c172af582s89ed7645403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "paid",
-      },
-      {
-        notes: "",
-        _id: "677121131aa7a69633afc0122a",
-        member: {
-          _id: "6763c172af582s89ed7645403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "paid",
-      },
-      {
-        notes: "",
-        _id: "677121131aa769s6313afc022a",
-        member: {
-          _id: "6763c172af5a8289ed7645403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "paid",
-      },
-      {
-        notes: "",
-        _id: "677121131aa76196s33afc022a",
-        member: {
-          _id: "6763c172af582a89ed7645403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "paid",
-      },
-      {
-        notes: "",
-        _id: "677121131aa761a9633afc022a",
-        member: {
-          _id: "6763c172afs58289ed7645403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "unpaid",
-      },
-      {
-        notes: "",
-        _id: "677121131aa769163s3afc022a",
-        member: {
-          _id: "6763c172af58289ed7645a403",
-          fullName: "Updated",
-          memberID: "BCSS-000001",
-        },
-        depositeDate: "2024-12-29T00:00:00.000Z",
-        depositeMonth: "March",
-        depositeYear: "2024",
-        monthlyFee: 80,
-        status: "paid",
-      },
-    ],
-  };
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const renderItem = ({ item }) => (
+  // Get the token from the auth store
+  const { token, checkAuth } = useAuthStore();
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      setIsLoading(true);
+
+      try {
+        // Ensure authentication is checked on component mount
+        await checkAuth();
+
+        if (!token) {
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await fetch(
+          "https://chattogram-somiti.makeupcoders.com/api/subscription/member-subscription",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include the token
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const result: SubscriptionResponse = await response.json();
+        if (result.success) {
+          setSubscriptions(result.data);
+        } else {
+          console.error("Failed to fetch subscriptions", result);
+        }
+      } catch (error) {
+        console.error("Error fetching subscriptions:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSubscriptions();
+  }, [checkAuth, token]);
+
+  const renderItem = ({ item }: { item: Subscription }) => (
     <View className="flex w-full flex-row justify-between px-4 py-2 border-b border-gray-300">
       <View className="w-[20%]">
         <Text className="text-gray-700">{item.depositeMonth}</Text>
@@ -143,32 +92,36 @@ export default function Home() {
       <Text className="text-center text-2xl text-sky-500 font-rubik-medium mb-8">
         Monthly Fee Details
       </Text>
-      <FlatList
-        data={subscriptionData.data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-        ListHeaderComponent={() => (
-          <View>
-            <View className="flex flex-row justify-between px-4 py-2 border-b border-gray-300">
-              <View className="w-[20%]">
-                <TableHeader text="Month" />
-              </View>
-              <View className="w-[20%]">
-                <TableHeader text="Year" />
-              </View>
-              <View className="w-[10%]">
-                <TableHeader text="Fee" />
-              </View>
-              <View className="w-[20%]">
-                <TableHeader text="Status" />
-              </View>
-              <View className="w-[30%]">
-                <TableHeader text="Deposit Date" />
+      {isLoading ? (
+        <Text className="text-center text-gray-500">Loading...</Text>
+      ) : (
+        <FlatList
+          data={subscriptions}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          ListHeaderComponent={() => (
+            <View>
+              <View className="flex flex-row justify-between px-4 py-2 border-b border-gray-300">
+                <View className="w-[20%]">
+                  <TableHeader text="Month" />
+                </View>
+                <View className="w-[20%]">
+                  <TableHeader text="Year" />
+                </View>
+                <View className="w-[10%]">
+                  <TableHeader text="Fee" />
+                </View>
+                <View className="w-[20%]">
+                  <TableHeader text="Status" />
+                </View>
+                <View className="w-[30%]">
+                  <TableHeader text="Deposit Date" />
+                </View>
               </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      )}
     </View>
   );
 }

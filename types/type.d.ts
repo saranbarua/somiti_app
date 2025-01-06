@@ -1,4 +1,4 @@
-import { TextInputProps, TouchableOpacityProps } from "react-native";
+import { TouchableOpacityProps } from "react-native";
 
 declare interface Driver {
   id: number;
@@ -62,78 +62,24 @@ declare interface ButtonProps extends TouchableOpacityProps {
   className?: string;
 }
 
-declare interface GoogleInputProps {
-  icon?: string;
-  initialLocation?: string;
-  containerStyle?: string;
-  textInputBackgroundColor?: string;
-  handlePress: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => void;
-}
-
-declare interface InputFieldProps extends TextInputProps {
-  label: string;
-  icon?: any;
-  secureTextEntry?: boolean;
-  labelStyle?: string;
-  containerStyle?: string;
-  inputStyle?: string;
-  iconStyle?: string;
-  className?: string;
-}
-
-declare interface PaymentProps {
+interface Member {
+  _id: string;
   fullName: string;
-  email: string;
-  amount: string;
-  driverId: number;
-  rideTime: number;
+  memberID: string;
 }
 
-declare interface LocationStore {
-  userLatitude: number | null;
-  userLongitude: number | null;
-  userAddress: string | null;
-  destinationLatitude: number | null;
-  destinationLongitude: number | null;
-  destinationAddress: string | null;
-  setUserLocation: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => void;
-  setDestinationLocation: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => void;
+interface Subscription {
+  notes: string;
+  _id: string;
+  member: Member;
+  depositeDate: string;
+  depositeMonth: string;
+  depositeYear: string;
+  monthlyFee: number;
+  status: string;
 }
 
-declare interface DriverStore {
-  drivers: MarkerData[];
-  selectedDriver: number | null;
-  setSelectedDriver: (driverId: number) => void;
-  setDrivers: (drivers: MarkerData[]) => void;
-  clearSelectedDriver: () => void;
-}
-
-declare interface DriverCardProps {
-  item: MarkerData;
-  selected: number;
-  setSelected: () => void;
+interface SubscriptionResponse {
+  success: boolean;
+  data: Subscription[];
 }
