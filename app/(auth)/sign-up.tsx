@@ -5,7 +5,14 @@ import images from "@/constants/images";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 
-import { Alert, Image, ScrollView, Text, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ReactNativeModal } from "react-native-modal";
 import * as ImagePicker from "expo-image-picker";
 
@@ -131,7 +138,7 @@ const SignUp = () => {
           />
           <InputField
             label="Date of Birth"
-            placeholder="Enter birth date"
+            placeholder="dd/mm/year"
             value={form.dateOfBirth}
             onChangeText={(value) => handleInputChange("dateOfBirth", value)}
           />
@@ -174,12 +181,44 @@ const SignUp = () => {
             value={form.religion}
             onChangeText={(value) => handleInputChange("religion", value)}
           />
-          <InputField
-            label="Marital Status"
-            placeholder="Yes/No"
-            value={form.maritalStatus}
-            onChangeText={(value) => handleInputChange("maritalStatus", value)}
-          />
+          <View className="mb-4">
+            <Text className="text-lg font-rubik-semibold mb-3">
+              Marital Status
+            </Text>
+            <View className="flex-row gap-4">
+              <TouchableOpacity
+                className={`flex-row items-center gap-2 ${
+                  form.maritalStatus === "Yes" ? "bg-blue-100 p-2 rounded" : ""
+                }`}
+                onPress={() => handleInputChange("maritalStatus", "Yes")}
+              >
+                <View
+                  className={`w-4 h-4 rounded-full border ${
+                    form.maritalStatus === "Yes"
+                      ? "bg-blue-500"
+                      : "border-gray-400"
+                  }`}
+                />
+                <Text className="text-gray-800">Yes</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className={`flex-row items-center gap-2 ${
+                  form.maritalStatus === "No" ? "bg-blue-100 p-2 rounded" : ""
+                }`}
+                onPress={() => handleInputChange("maritalStatus", "No")}
+              >
+                <View
+                  className={`w-4 h-4 rounded-full border ${
+                    form.maritalStatus === "No"
+                      ? "bg-blue-500"
+                      : "border-gray-400"
+                  }`}
+                />
+                <Text className="text-gray-800">No</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           <InputField
             label="National ID"
             placeholder="Enter id card number"
@@ -220,7 +259,11 @@ const SignUp = () => {
               />
             )}
           </View>
-          <Button title="Sign Up" onPress={onSignUpPress} className="mt-6" />
+          <Button
+            title={isLoading ? "Signing up..." : "Sign up"}
+            onPress={onSignUpPress}
+            className="mt-6"
+          />
 
           <Link
             href="/sign-in"
@@ -244,7 +287,7 @@ const SignUp = () => {
             </Text>
             <Button
               title="Browse Home"
-              onPress={() => router.push(`/(root)/(tabs)/home`)}
+              onPress={() => router.push(`/(auth)/welcome`)}
               className="mt-5"
             />
           </View>

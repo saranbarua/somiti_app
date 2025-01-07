@@ -102,9 +102,7 @@ export default function Home() {
         <ActivityIndicator size="large" className="text-primary-100" />
       ) : subscriptions.length === 0 ? (
         <View className="flex justify-center items-center mt-10">
-          <Text className="text-gray-500 text-lg">
-            No data available,Please Again Login.
-          </Text>
+          <Text className="text-gray-500 text-lg">No data added yet.</Text>
         </View>
       ) : (
         <FlatList
