@@ -69,7 +69,7 @@ const Profile = () => {
     router.push("/home"); // Navigate to the Subscriptions page
   };
   const handleDetailsPress = () => {
-    router.push("/(root)/test");
+    router.push("/(root)/profile-details");
   };
   const handleMembershipPress = () => {
     router.push("/(root)/membership");
