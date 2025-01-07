@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     elevation: 3,
   },
-
   loaderContainer: {
     flex: 1,
     justifyContent: "center",
