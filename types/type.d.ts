@@ -40,3 +40,34 @@ interface SubscriptionResponse {
   success: boolean;
   data: Subscription[];
 }
+
+interface MemberResponse {
+  success: boolean;
+  data: MemberData;
+}
+
+interface MemberData {
+  _id: string;
+  fullName: string;
+  fathersName: string;
+  husbandsName: string;
+  mothersName: string;
+  dateOfBirth: string;
+  bloodGroup: string;
+  mobileNumberBD: string;
+  mobileNumberSA: string;
+  permanentAddress: string;
+  presentAddress: string;
+  workAddress: string;
+  religion: string;
+  maritalStatus: string;
+  nationalIDNo: string;
+  refererName: string;
+  profileImg: string;
+  isApproved: boolean;
+  memberID: string;
+  __v: number;
+  memberCard: string;
+  status: string;
+  chadaStart: boolean;
+}

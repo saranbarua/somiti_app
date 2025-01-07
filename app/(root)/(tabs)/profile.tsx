@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   View,
   Modal,
+  Linking,
+  ActivityIndicator,
 } from "react-native";
 
 import icons from "@/constants/icons";
-import { settings } from "@/constants/data";
-import images from "@/constants/images";
 import { router } from "expo-router";
 import useAuthStore from "@/store/authStore";
 import { useState } from "react";
+import { useMemberProfile } from "@/components/hooks/useProfile";
 
 interface SettingsItemProp {
   icon: ImageSourcePropType;
@@ -60,6 +61,25 @@ const Profile = () => {
     onLogout();
   };
 
+  const { profile, isLoading } = useMemberProfile();
+  const profileImg = profile?.profileImg;
+
+  //router for next page
+  const handleSubscriptionsPress = () => {
+    router.push("/home"); // Navigate to the Subscriptions page
+  };
+  const handleDetailsPress = () => {
+    router.push("/(root)/test");
+  };
+  const handleMembershipPress = () => {
+    router.push("/(root)/membership");
+  };
+  const handleWebPress = () => {
+    const url = "https://www.facebook.com";
+    Linking.openURL(url).catch((err) =>
+      console.error("Failed to open URL", err)
+    );
+  };
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView
@@ -70,30 +90,49 @@ const Profile = () => {
           <Text className="text-xl font-rubik-bold">Profile</Text>
           <Image source={icons.bell} className="size-5" />
         </View>
-
-        <View className="flex flex-row justify-center mt-5">
-          <View className="flex flex-col items-center relative mt-5">
-            <Image
-              // source={{ uri: user?.avatar }}
-              source={images.avatar}
-              className="size-44 relative rounded-full"
-            />
-            <TouchableOpacity className="absolute bottom-11 right-2">
-              <Image source={icons.edit} className="size-9" />
-            </TouchableOpacity>
-
-            <Text className="text-2xl font-rubik-bold mt-2">Saran Barua</Text>
+        {isLoading ? (
+          <View className="flex-1 justify-center items-center mt-10">
+            <ActivityIndicator size="large" className="text-primary-100" />
           </View>
-        </View>
-
+        ) : (
+          <View className="flex flex-row justify-center mt-5">
+            <View className="flex flex-col items-center relative mt-5">
+              <Image
+                source={{
+                  uri: `https://chattogram-somiti.makeupcoders.com${profileImg}`,
+                }}
+                className="size-44 relative rounded-full"
+              />
+              <Text className="text-2xl font-rubik-bold mt-2">
+                {profile?.fullName}
+              </Text>
+            </View>
+          </View>
+        )}
         <View className="flex flex-col mt-10">
-          <SettingsItem icon={icons.wallet} title="Payments" />
+          <SettingsItem
+            icon={icons.wallet}
+            title="Subscriptions"
+            onPress={handleSubscriptionsPress}
+          />
         </View>
 
         <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
-          {settings.slice(2).map((item, index) => (
-            <SettingsItem key={index} {...item} />
-          ))}
+          <SettingsItem
+            icon={icons.info}
+            title="Profile Details"
+            onPress={handleDetailsPress}
+          />
+          <SettingsItem
+            icon={icons.shield}
+            title="MemberShip Card"
+            onPress={handleMembershipPress}
+          />
+          <SettingsItem
+            icon={icons.google}
+            title="Go to Website"
+            onPress={handleWebPress}
+          />
         </View>
 
         <View className="flex flex-col border-t mt-5 pt-5 border-primary-200">
