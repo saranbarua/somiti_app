@@ -44,7 +44,7 @@ const SignIn = () => {
           setTimeout(() => {
             setShowSuccessModal(false);
             router.push(`/(root)/(tabs)/home`);
-          }, 2000);
+          }, 1000);
         }
       } else {
         console.error("API Error:", result);
@@ -89,13 +89,7 @@ const SignIn = () => {
         }
         keyboardType="phone-pad"
       />
-      {/* <InputField
-        label="Password"
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        value={form.password}
-        onChangeText={(value: string) => handleInputChange("password", value)}
-      /> */}
+
       <PasswordInput
         label="Password"
         placeholder="Enter your password"
