@@ -15,7 +15,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.saran23.Somiti"
     },
     "web": {
       "bundler": "metro",
@@ -56,6 +60,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "6d2596bb-e693-4ac9-a0a0-e8e780e32ebe"
+      }
     }
   }
 }
