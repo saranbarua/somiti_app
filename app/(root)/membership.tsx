@@ -91,7 +91,7 @@ export default function MembershipCard() {
           className="bg-primary-100 p-2"
           onPress={handleDownload}
         >
-          <Text className="text-white font-rubik-semibold">Download Image</Text>
+          <Text className="text-white font-rubik-semibold">Download Card</Text>
         </TouchableOpacity>
       </View>
     </View>
