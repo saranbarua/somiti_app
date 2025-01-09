@@ -9,6 +9,10 @@ export default function RootLayout() {
         options={{ headerShown: true, title: "Profile Details" }}
       />
       <Stack.Screen
+        name="change-password"
+        options={{ headerShown: true, title: "Change Password" }}
+      />
+      <Stack.Screen
         name="membership"
         options={{ headerShown: true, title: "Membership Card" }}
       />

@@ -1,3 +1,4 @@
+import Button from "@/components/Button/Button";
 import { useMemberProfile } from "@/components/hooks/useProfile";
 import React from "react";
 import { View, Text, ActivityIndicator, ScrollView } from "react-native";
@@ -147,6 +148,11 @@ export default function ProfileDetails() {
               {profile?.isApproved === true ? "Approved" : "Not Approved"}
             </Text>
           </View>
+          <Button
+            title={"Delete Account"}
+            className="mt-6"
+            bgVariant="danger"
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

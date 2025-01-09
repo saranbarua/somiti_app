@@ -74,6 +74,9 @@ const Profile = () => {
   const handleMembershipPress = () => {
     router.push("/(root)/membership");
   };
+  const handleChangePassPress = () => {
+    router.push("/(root)/change-password");
+  };
   const handleWebPress = () => {
     const url = "https://www.facebook.com";
     Linking.openURL(url).catch((err) =>
@@ -132,6 +135,11 @@ const Profile = () => {
             icon={icons.google}
             title="Go to Website"
             onPress={handleWebPress}
+          />
+          <SettingsItem
+            icon={icons.edit}
+            title="Change Password"
+            onPress={handleChangePassPress}
           />
         </View>
 
