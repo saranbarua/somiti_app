@@ -1,13 +1,15 @@
+import React, { useState } from "react";
+import { Alert, Image, Text, View } from "react-native";
+import { Link, router } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
+import axios from "axios";
+import { ReactNativeModal } from "react-native-modal";
+
 import Button from "@/components/Button/Button";
 import InputField from "@/components/InputField/InputField";
+import PasswordInput from "@/components/InputField/PasswordInput";
 import images from "@/constants/images";
 import useAuthStore from "@/store/authStore";
-import { Link, router } from "expo-router";
-import { useState } from "react";
-import { Alert, Image, Text, View } from "react-native";
-import { ReactNativeModal } from "react-native-modal";
-import axios from "axios";
-import PasswordInput from "@/components/InputField/PasswordInput";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,20 +17,27 @@ const SignIn = () => {
     mobileNumber: "",
     password: "",
   });
-  const { login } = useAuthStore();
-
+  const { login, isAuthenticated } = useAuthStore();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleInputChange = (name: string, value: string) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (isAuthenticated) {
+        router.push(`/(root)/(tabs)/home`);
+      }
+    }, [isAuthenticated])
+  );
+
   const onSignInPress = async () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
         "https://chattogram-somiti.makeupcoders.com/api/member/login",
-        form, // Axios automatically stringifies the body
+        form,
         {
           headers: {
             "Content-Type": "application/json",
@@ -37,31 +46,24 @@ const SignIn = () => {
       );
 
       const result = response.data;
-      if (response.status === 200) {
+      if (response.status === 200 && result.success) {
+        login(result.token); // Update the auth state
         setShowSuccessModal(true);
-        if (result.success) {
-          login(result.token);
-          setTimeout(() => {
-            setShowSuccessModal(false);
-            router.push(`/(root)/(tabs)/home`);
-          }, 1000);
-        }
+        setTimeout(() => {
+          setShowSuccessModal(false);
+          router.push(`/(root)/(tabs)/home`);
+        }, 1000);
       } else {
-        console.error("API Error:", result);
         Alert.alert("Error", result.message || "Invalid credentials");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // Specific Axios error handling
-        console.error("Axios Error:", error.response?.data || error.message);
         Alert.alert(
           "Error",
           error.response?.data?.message ||
             "Unable to sign in. Please try again."
         );
       } else {
-        // General error handling
-        console.error("Unexpected Error:", error);
         Alert.alert("Error", "Something went wrong. Please try again.");
       }
     } finally {
