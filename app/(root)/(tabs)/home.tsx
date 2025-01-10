@@ -9,6 +9,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
+import { router } from "expo-router";
 
 const styles = StyleSheet.create({
   container: {
@@ -22,7 +23,6 @@ export default function Home() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Get the token from the auth store
   const { token, checkAuth } = useAuthStore();
 
   useEffect(() => {
@@ -35,6 +35,8 @@ export default function Home() {
 
         if (!token) {
           setIsLoading(false);
+          router.push(`/(auth)/sign-in`);
+          // Redirect to login if not authenticated
           return;
         }
 
@@ -44,7 +46,7 @@ export default function Home() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include the token
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -74,7 +76,6 @@ export default function Home() {
       <View className="w-[20%]">
         <Text className="text-gray-700">{item.depositeMonth}</Text>
       </View>
-
       <View className="w-[20%]">
         <Text className="text-gray-700">{item.depositeYear}</Text>
       </View>
@@ -93,6 +94,7 @@ export default function Home() {
       </View>
     </View>
   );
+
   return (
     <View style={styles.container}>
       <Text className="text-center text-2xl text-sky-500 font-rubik-medium mb-8">

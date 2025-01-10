@@ -1,30 +1,52 @@
 import Button from "@/components/Button/Button";
 import { useMemberProfile } from "@/components/hooks/useProfile";
-import React from "react";
-import { View, Text, ActivityIndicator, ScrollView } from "react-native";
+import useAuthStore from "@/store/authStore";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { View, Text, ActivityIndicator, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileDetails() {
-  // const profile = {
-  //   fullName: "John Doe",
-  //   fathersName: "John SR",
-  //   husbandsName: "",
-  //   mothersName: "Jane Dain",
-  //   dateOfBirth: "10/10/10",
-  //   bloodGroup: "",
-  //   mobileNumberBD: "01675654438",
-  //   mobileNumberSA: "99125454546",
-  //   permanentAddress: "Dhaka, Bangladesh",
-  //   presentAddress: "Chattogram, Bangladesh",
-  //   workAddress: "Riyad, Soudi Arabia",
-  //   religion: "Islam",
-  //   maritalStatus: "Married",
-  //   nationalIDNo: "125446565689",
-  //   refererName: "",
-  //   isApproved: true,
-  //   memberID: "BCSS-000002",
-  // };
+  const { token, checkAuth } = useAuthStore();
   const { profile, isLoading } = useMemberProfile();
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isStepTwo, setIsStepTwo] = useState(false);
+
+  //handle delete
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    await checkAuth();
+    try {
+      const response = await fetch(
+        "https://chattogram-somiti.makeupcoders.com/api/member/delete",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        Alert.alert(
+          "Account Deleted",
+          "Your account has been successfully deleted."
+        );
+        router.push(`/(auth)/welcome`);
+      } else {
+        Alert.alert("Error", "Failed to delete the account. Please try again.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "An error occurred while deleting the account.");
+    } finally {
+      setIsDeleting(false);
+      setIsModalVisible(false);
+      setIsStepTwo(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <View className="flex-1 justify-center items-center bg-gray-100">
@@ -152,9 +174,67 @@ export default function ProfileDetails() {
             title={"Delete Account"}
             className="mt-6"
             bgVariant="danger"
+            onPress={() => setIsModalVisible(true)}
           />
         </View>
       </ScrollView>
+      {/* Modal */}
+      {isModalVisible && (
+        <View className="absolute inset-0 bg-black bg-opacity-50 justify-center items-center">
+          <View className="bg-white rounded-lg p-6 w-4/5">
+            {isStepTwo ? (
+              <>
+                <Text className="text-lg font-bold mb-4 text-red-600">
+                  Final Confirmation
+                </Text>
+                <Text className="text-gray-600 mb-6">
+                  This action is irreversible. Are you absolutely sure you want
+                  to delete your account?
+                </Text>
+                <View className="grid gap-2 justify-end">
+                  <Button
+                    title="Cancel"
+                    bgVariant="secondary"
+                    className="mr-3"
+                    onPress={() => {
+                      setIsModalVisible(false);
+                      setIsStepTwo(false);
+                    }}
+                  />
+                  <Button
+                    title={isDeleting ? "Deleting..." : "Delete"}
+                    bgVariant="danger"
+                    onPress={handleDeleteAccount}
+                    disabled={isDeleting}
+                  />
+                </View>
+              </>
+            ) : (
+              <>
+                <Text className="text-lg font-bold mb-4">
+                  Are you sure you want to delete your account?
+                </Text>
+                <Text className="text-gray-600 mb-6">
+                  You cannot retrieve or recover your data after deletion.
+                </Text>
+                <View className="grid gap-2 justify-end">
+                  <Button
+                    title="Cancel"
+                    bgVariant="primary"
+                    className="mr-3"
+                    onPress={() => setIsModalVisible(false)}
+                  />
+                  <Button
+                    title="Proceed"
+                    bgVariant="success"
+                    onPress={() => setIsStepTwo(true)}
+                  />
+                </View>
+              </>
+            )}
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
