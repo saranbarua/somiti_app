@@ -1,6 +1,7 @@
 import Button from "@/components/Button/Button";
 import InputField from "@/components/InputField/InputField";
 import useAuthStore from "@/store/authStore";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { Text, StyleSheet, Alert, SafeAreaView } from "react-native";
 
@@ -29,7 +30,7 @@ export default function ChangePassword() {
       const response = await fetch(
         "https://chattogram-somiti.makeupcoders.com/api/member/change-pass",
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -48,7 +49,7 @@ export default function ChangePassword() {
 
       const data = await response.json();
       Alert.alert("Success", data.message || "Password changed successfully!");
-
+      router.push(`/(root)/(tabs)/home`);
       // Clear fields after successful submission
       setOldPassword("");
       setNewPassword("");

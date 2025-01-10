@@ -78,7 +78,7 @@ const Profile = () => {
     router.push("/(root)/change-password");
   };
   const handleWebPress = () => {
-    const url = "https://www.facebook.com";
+    const url = "https://ctgsomitidmm.com";
     Linking.openURL(url).catch((err) =>
       console.error("Failed to open URL", err)
     );
