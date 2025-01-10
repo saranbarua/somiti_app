@@ -24,7 +24,6 @@ export default function RootLayout() {
   }, [isAuthenticated, isAuthChecked, router]);
 
   if (!isAuthChecked) {
-    // Render a loading state or a fallback until authentication check is complete
     return null; // You can show a loading spinner here
   }
 

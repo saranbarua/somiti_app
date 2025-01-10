@@ -12,9 +12,9 @@ import {
 } from "react-native";
 
 import icons from "@/constants/icons";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import useAuthStore from "@/store/authStore";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useMemberProfile } from "@/components/hooks/useProfile";
 
 interface SettingsItemProp {
@@ -84,16 +84,15 @@ const Profile = () => {
     );
   };
 
-  const { token } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   // Check if token exists and redirect to sign-in if not
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      if (!token) {
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!isAuthenticated) {
         router.push(`/(auth)/sign-in`);
       }
-    };
-    checkAuthentication();
-  }, [token]);
+    }, [isAuthenticated])
+  );
 
   return (
     <SafeAreaView className="h-full bg-white">

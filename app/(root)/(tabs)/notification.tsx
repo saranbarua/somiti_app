@@ -1,15 +1,23 @@
 import { usePushNotifications } from "@/components/hooks/usePushNotification";
 import { StyleSheet, Text, View, FlatList, RefreshControl } from "react-native";
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import useAuthStore from "@/store/authStore";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
 export default function Notification() {
   const { expoPushToken } = usePushNotifications();
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState<null | string>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const { token, checkAuth } = useAuthStore();
+  const { token, checkAuth, isAuthenticated } = useAuthStore();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!isAuthenticated) {
+        router.push(`/(auth)/sign-in`);
+      }
+    }, [isAuthenticated])
+  );
 
   // Function to fetch notifications
   const fetchNotifications = useCallback(async () => {
@@ -33,8 +41,7 @@ export default function Notification() {
       const data = await response.json();
       setNotifications(data.data);
     } catch (error) {
-      console.error("Error fetching notifications:", error);
-      setError("Failed to fetch notifications.");
+      setError("Failed to fetch notifications");
     } finally {
       setRefreshing(false);
     }

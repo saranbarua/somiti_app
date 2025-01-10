@@ -11,21 +11,21 @@ import {
 import * as FileSystem from "expo-file-system";
 import { useMemberProfile } from "@/components/hooks/useProfile";
 import * as MediaLibrary from "expo-media-library";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import useAuthStore from "@/store/authStore";
 
 export default function MembershipCard() {
   const { profile, isLoading } = useMemberProfile();
-  const { token } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   // Check if token exists and redirect to sign-in if not
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      if (!token) {
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!isAuthenticated) {
         router.push(`/(auth)/sign-in`);
       }
-    };
-    checkAuthentication();
-  }, [token]);
+    }, [isAuthenticated])
+  );
+
   // Handle image download
   const handleDownload = async () => {
     if (!profile?.memberCard) {
@@ -58,8 +58,7 @@ export default function MembershipCard() {
         "Membership card has been downloaded to your gallery."
       );
     } catch (error) {
-      console.error("Download error:", error);
-      Alert.alert("Error", "Failed to download the membership card.");
+      Alert.alert("Download error:");
     }
   };
 
