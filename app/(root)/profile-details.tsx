@@ -2,12 +2,12 @@ import Button from "@/components/Button/Button";
 import { useMemberProfile } from "@/components/hooks/useProfile";
 import useAuthStore from "@/store/authStore";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileDetails() {
-  const { token, checkAuth } = useAuthStore();
+  const { token, checkAuth, logout } = useAuthStore();
   const { profile, isLoading } = useMemberProfile();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -34,7 +34,8 @@ export default function ProfileDetails() {
           "Account Deleted",
           "Your account has been successfully deleted."
         );
-        router.push(`/(auth)/welcome`);
+        logout();
+        router.push(`/(auth)/sign-in`);
       } else {
         Alert.alert("Error", "Failed to delete the account. Please try again.");
       }

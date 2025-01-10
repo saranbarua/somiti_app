@@ -14,7 +14,7 @@ import {
 import icons from "@/constants/icons";
 import { router } from "expo-router";
 import useAuthStore from "@/store/authStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMemberProfile } from "@/components/hooks/useProfile";
 
 interface SettingsItemProp {
@@ -83,6 +83,18 @@ const Profile = () => {
       console.error("Failed to open URL", err)
     );
   };
+
+  const { token } = useAuthStore();
+  // Check if token exists and redirect to sign-in if not
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      if (!token) {
+        router.push(`/(auth)/sign-in`);
+      }
+    };
+    checkAuthentication();
+  }, [token]);
+
   return (
     <SafeAreaView className="h-full bg-white">
       <ScrollView

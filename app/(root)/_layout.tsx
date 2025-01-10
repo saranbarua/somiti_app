@@ -1,6 +1,33 @@
 import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import useAuthStore from "@/store/authStore";
 
 export default function RootLayout() {
+  const { isAuthenticated, checkAuth } = useAuthStore();
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      await checkAuth(); // Check authentication status
+      setIsAuthChecked(true);
+    };
+    checkAuthentication();
+  }, [checkAuth]);
+
+  useEffect(() => {
+    // If the user is not authenticated, navigate to the login page
+    if (isAuthChecked && !isAuthenticated) {
+      router.push("/(auth)/sign-in"); // Adjust the path as needed
+    }
+  }, [isAuthenticated, isAuthChecked, router]);
+
+  if (!isAuthChecked) {
+    // Render a loading state or a fallback until authentication check is complete
+    return null; // You can show a loading spinner here
+  }
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

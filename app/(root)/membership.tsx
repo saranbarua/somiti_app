@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -11,10 +11,21 @@ import {
 import * as FileSystem from "expo-file-system";
 import { useMemberProfile } from "@/components/hooks/useProfile";
 import * as MediaLibrary from "expo-media-library";
+import { router } from "expo-router";
+import useAuthStore from "@/store/authStore";
 
 export default function MembershipCard() {
   const { profile, isLoading } = useMemberProfile();
-
+  const { token } = useAuthStore();
+  // Check if token exists and redirect to sign-in if not
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      if (!token) {
+        router.push(`/(auth)/sign-in`);
+      }
+    };
+    checkAuthentication();
+  }, [token]);
   // Handle image download
   const handleDownload = async () => {
     if (!profile?.memberCard) {

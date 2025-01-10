@@ -1,6 +1,7 @@
 import TableHeader from "@/components/TextForm/TableHeader";
 import useAuthStore from "@/store/authStore";
 import { Subscription, SubscriptionResponse } from "@/types/type";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   Text,
@@ -9,7 +10,6 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { router } from "expo-router";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +25,7 @@ export default function Home() {
 
   const { token, checkAuth } = useAuthStore();
 
+  console.log(token);
   useEffect(() => {
     const fetchSubscriptions = async () => {
       setIsLoading(true);
@@ -32,11 +33,8 @@ export default function Home() {
       try {
         // Ensure authentication is checked on component mount
         await checkAuth();
-
         if (!token) {
-          setIsLoading(false);
-          router.push(`/(auth)/sign-in`);
-          // Redirect to login if not authenticated
+          router.push("/(auth)/sign-in");
           return;
         }
 
