@@ -55,12 +55,20 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": true
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
     },
-    "extra": {
+    "extrsa": {
       "router": {
         "origin": false
       },

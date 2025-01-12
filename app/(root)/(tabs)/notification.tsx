@@ -101,17 +101,19 @@ export default function Notification() {
     <View style={styles.container}>
       <Text className="text-2xl font-bold text-primary-100">Notifications</Text>
       {error && <Text style={styles.error}>{error}</Text>}
-      <FlatList
-        data={notifications}
-        renderItem={renderNotification}
-        keyExtractor={(item) => item._id}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={fetchNotifications}
-          />
-        }
-      />
+      <View className="h-[85%]">
+        <FlatList
+          data={notifications}
+          renderItem={renderNotification}
+          keyExtractor={(item) => item._id}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={fetchNotifications}
+            />
+          }
+        />
+      </View>
     </View>
   );
 }

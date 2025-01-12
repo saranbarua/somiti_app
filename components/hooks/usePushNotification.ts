@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+
 import Constants from "expo-constants";
+
 import { Platform } from "react-native";
-import useAuthStore from "@/store/authStore";
 
 export interface PushNotificationState {
   expoPushToken?: Notifications.ExpoPushToken;
@@ -11,7 +12,6 @@ export interface PushNotificationState {
 }
 
 export const usePushNotifications = (): PushNotificationState => {
-  // Set notification handling behavior
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldPlaySound: false,
@@ -23,17 +23,14 @@ export const usePushNotifications = (): PushNotificationState => {
   const [expoPushToken, setExpoPushToken] = useState<
     Notifications.ExpoPushToken | undefined
   >();
+
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
   >();
-  const [error, setError] = useState<string | null>(null);
 
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
-  const { token: authToken } = useAuthStore();
-
-  // Function to register for push notifications
   async function registerForPushNotificationsAsync() {
     let token;
     if (Device.isDevice) {
@@ -46,21 +43,19 @@ export const usePushNotifications = (): PushNotificationState => {
         finalStatus = status;
       }
       if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notifications");
+        alert("Failed to get push token for push notification");
         return;
       }
 
       token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas?.projectId,
+        projectId: Constants.expoConfig?.extra?.eas.projectId,
       });
-
-      console.log("Push Token:", token?.data);
     } else {
       alert("Must be using a physical device for Push notifications");
     }
 
     if (Platform.OS === "android") {
-      await Notifications.setNotificationChannelAsync("default", {
+      Notifications.setNotificationChannelAsync("default", {
         name: "default",
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
@@ -71,47 +66,11 @@ export const usePushNotifications = (): PushNotificationState => {
     return token;
   }
 
-  // Function to post the push notification token to the server
-  const postPushNotificationToken = async (
-    token: Notifications.ExpoPushToken
-  ) => {
-    try {
-      const response = await fetch(
-        `${
-          process.env.EXPO_PUBLIC_API_URL ||
-          "https://chattogram-somiti.makeupcoders.com/api"
-        }/notification/save-token`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({ expoToken: token.data }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to post token: ${response.status}`);
-      }
-
-      console.log("Push token successfully sent to the server");
-    } catch (err) {
-      console.error("Error posting token to API:", err);
-      setError("Failed to register push notification token.");
-    }
-  };
-
   useEffect(() => {
-    // Register for push notifications and post token
     registerForPushNotificationsAsync().then((token) => {
-      if (token && token.data !== expoPushToken?.data) {
-        setExpoPushToken(token);
-        postPushNotificationToken(token);
-      }
+      setExpoPushToken(token);
     });
 
-    // Set up notification listeners
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
@@ -119,21 +78,17 @@ export const usePushNotifications = (): PushNotificationState => {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Notification response:", response);
+        console.log(response);
       });
 
-    // Cleanup listeners on unmount
     return () => {
-      if (notificationListener.current) {
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-      }
-      if (responseListener.current) {
-        Notifications.removeNotificationSubscription(responseListener.current);
-      }
+      Notifications.removeNotificationSubscription(
+        notificationListener.current!
+      );
+
+      Notifications.removeNotificationSubscription(responseListener.current!);
     };
-  }, [expoPushToken?.data]);
+  }, []);
 
   return {
     expoPushToken,
