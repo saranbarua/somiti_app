@@ -10,7 +10,6 @@ export default function Notification() {
   const [error, setError] = useState<null | string>(null);
   const [refreshing, setRefreshing] = useState(false);
   const { token, checkAuth, isAuthenticated } = useAuthStore();
-
   useFocusEffect(
     React.useCallback(() => {
       if (!isAuthenticated) {
