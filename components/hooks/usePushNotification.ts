@@ -31,7 +31,7 @@ export const usePushNotifications = (): PushNotificationState => {
   const responseListener = useRef<Notifications.Subscription>();
 
   const saveTokenToDatabase = async (token: string) => {
-    console.log("Saving token:", token);
+    // console.log("Saving token:", token);
 
     try {
       const bearerToken = await AsyncStorage.getItem("auth-storage"); // Replace with your storage key
@@ -95,7 +95,7 @@ export const usePushNotifications = (): PushNotificationState => {
         token = await Notifications.getExpoPushTokenAsync({
           projectId: Constants.expoConfig?.extra?.eas.projectId,
         });
-        console.log(token);
+
         if (token) {
           setExpoPushToken(token);
           await saveTokenToDatabase(token.data); // Save token to the database
