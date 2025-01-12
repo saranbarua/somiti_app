@@ -1,26 +1,37 @@
-import { usePushNotifications } from "@/components/hooks/usePushNotification";
 import { StyleSheet, Text, View, FlatList, RefreshControl } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
 import useAuthStore from "@/store/authStore";
 import { router, useFocusEffect } from "expo-router";
+import { usePushNotifications } from "@/components/hooks/usePushNotification";
+
+interface NotificationItem {
+  _id: string;
+  title: string;
+  details: string;
+  createdAt: string;
+}
 
 export default function Notification() {
-  const { expoPushToken } = usePushNotifications();
-  const [notifications, setNotifications] = useState([]);
-  const [error, setError] = useState<null | string>(null);
-  const [refreshing, setRefreshing] = useState(false);
   const { token, checkAuth, isAuthenticated } = useAuthStore();
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const { expoPushToken, notification } = usePushNotifications();
+
+  // Navigate to sign-in page if not authenticated
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       if (!isAuthenticated) {
         router.push(`/(auth)/sign-in`);
       }
     }, [isAuthenticated])
   );
 
-  // Function to fetch notifications
+  // Fetch notifications from the API
   const fetchNotifications = useCallback(async () => {
     setRefreshing(true);
+    setError(null);
     try {
       const response = await fetch(
         "https://chattogram-somiti.makeupcoders.com/api/notification",
@@ -34,19 +45,22 @@ export default function Notification() {
       );
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Error: ${response.status}`);
       }
 
       const data = await response.json();
       setNotifications(data.data);
-    } catch (error) {
-      setError("Failed to fetch notifications");
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch notifications"
+      );
     } finally {
       setRefreshing(false);
     }
   }, [token]);
 
-  // Authenticate and post token logic
+  // Initialize authentication and fetch notifications
   useEffect(() => {
     const initialize = async () => {
       if (!token) {
@@ -54,39 +68,15 @@ export default function Notification() {
         return;
       }
 
-      await checkAuth();
-
-      if (expoPushToken?.data) {
-        try {
-          const response = await fetch(
-            "https://chattogram-somiti.makeupcoders.com/api/notification/save-token",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({ expoToken: expoPushToken.data }),
-            }
-          );
-
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-        } catch (error) {
-          console.error("Error posting token to API:", error);
-          setError("Failed to post token to API.");
-        }
-      }
-
-      fetchNotifications(); // Fetch notifications after posting the token
+      await checkAuth(); // Ensure user authentication
+      await fetchNotifications(); // Fetch notifications after authentication
     };
 
     initialize();
-  }, [expoPushToken?.data, token, fetchNotifications, checkAuth]);
+  }, [token, fetchNotifications, checkAuth]);
 
   // Render a notification item
-  const renderNotification = ({ item }) => (
+  const renderNotification = ({ item }: { item: NotificationItem }) => (
     <View style={styles.notificationCard}>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.details}>{item.details}</Text>
@@ -98,21 +88,25 @@ export default function Notification() {
 
   return (
     <View style={styles.container}>
-      <Text className="text-2xl font-bold text-primary-100">Notifications</Text>
+      <Text style={styles.header}>Notifications</Text>
       {error && <Text style={styles.error}>{error}</Text>}
-      <View className="h-[85%]">
-        <FlatList
-          data={notifications}
-          renderItem={renderNotification}
-          keyExtractor={(item) => item._id}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={fetchNotifications}
-            />
-          }
-        />
-      </View>
+      <FlatList
+        data={notifications}
+        renderItem={renderNotification}
+        keyExtractor={(item) => item._id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={fetchNotifications}
+          />
+        }
+        contentContainerStyle={styles.list}
+        ListEmptyComponent={
+          !refreshing && (
+            <Text style={styles.emptyText}>No notifications available.</Text>
+          )
+        }
+      />
     </View>
   );
 }
@@ -122,6 +116,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 16,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 16,
   },
   error: {
     color: "red",
@@ -151,5 +151,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#888",
     marginTop: 8,
+  },
+  list: {
+    paddingBottom: 16,
+  },
+  emptyText: {
+    textAlign: "center",
+    color: "#555",
+    fontSize: 16,
+    marginTop: 32,
   },
 });

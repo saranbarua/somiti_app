@@ -68,7 +68,7 @@
     "experiments": {
       "typedRoutes": true
     },
-    "extrsa": {
+    "extra": {
       "router": {
         "origin": false
       },
