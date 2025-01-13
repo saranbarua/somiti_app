@@ -18,12 +18,12 @@
       },
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "NOTIFICATIONS",
-        "RECEIVE_BOOT_COMPLETED"
+        "android.permission.NOTIFICATIONS",
+        "android.permission.RECEIVE_BOOT_COMPLETED"
       ],
       "useNextNotificationsApi": true,
-      "package": "com.saran23.Somiti",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.makeupcoders.somitiapp",
+      "googleServicesFile": "./google-service.json"
     },
     "web": {
       "bundler": "metro",
@@ -78,7 +78,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "6d2596bb-e693-4ac9-a0a0-e8e780e32ebe"
+        "projectId": "668fa002-45ad-4430-96e7-9fb243e02dbb"
       }
     }
   }
