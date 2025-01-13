@@ -16,9 +16,14 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.RECORD_AUDIO", "NOTIFICATIONS"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "NOTIFICATIONS",
+        "RECEIVE_BOOT_COMPLETED"
+      ],
       "useNextNotificationsApi": true,
-      "package": "com.saran23.Somiti"
+      "package": "com.saran23.Somiti",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
