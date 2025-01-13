@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "678715595005",
+    "project_id": "somiti-app",
+    "storage_bucket": "somiti-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678715595005:android:dba819a5ebbcd5f39d0694",
+        "android_client_info": {
+          "package_name": "com.makeupcoders.somitiapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARlMS-US8MqlLH61yS-JVHcrLMFf1OkcY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
