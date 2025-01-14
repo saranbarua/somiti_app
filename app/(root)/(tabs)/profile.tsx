@@ -115,7 +115,7 @@ const Profile = () => {
                 source={{
                   uri: `https://chattogram-somiti.makeupcoders.com${profileImg}`,
                 }}
-                className="size-44 relative rounded-full"
+                className="size-44 relative rounded-full border"
               />
               <Text className="text-2xl font-rubik-bold mt-2">
                 {profile?.fullName}
