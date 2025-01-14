@@ -3,16 +3,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import useAuthStore from "@/store/authStore";
 import { router, useFocusEffect } from "expo-router";
 
-interface NotificationItem {
+interface Item {
   _id: string;
   title: string;
   details: string;
-  createdAt: string;
 }
 
-export default function Notification() {
+export default function Message() {
   const { token, checkAuth, isAuthenticated } = useAuthStore();
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [messages, setMessages] = useState<Item[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -26,12 +25,12 @@ export default function Notification() {
   );
 
   // Fetch notifications from the API
-  const fetchNotifications = useCallback(async () => {
+  const fetchMessage = useCallback(async () => {
     setRefreshing(true);
     setError(null);
     try {
       const response = await fetch(
-        "https://chattogram-somiti.makeupcoders.com/api/notification",
+        "https://chattogram-somiti.makeupcoders.com/api/member-message/single-member",
         {
           method: "GET",
           headers: {
@@ -47,11 +46,9 @@ export default function Notification() {
       }
 
       const data = await response.json();
-      setNotifications(data.data);
+      setMessages(data.data);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch notifications"
-      );
+      setError(err instanceof Error ? err.message : "Failed to fetch Messages");
     } finally {
       setRefreshing(false);
     }
@@ -66,41 +63,35 @@ export default function Notification() {
       }
 
       await checkAuth(); // Ensure user authentication
-      await fetchNotifications(); // Fetch notifications after authentication
+      await fetchMessage(); // Fetch notifications after authentication
     };
 
     initialize();
-  }, [token, fetchNotifications, checkAuth]);
+  }, [token, fetchMessage, checkAuth]);
 
   // Render a notification item
-  const renderNotification = ({ item }: { item: NotificationItem }) => (
-    <View style={styles.notificationCard}>
+  const renderMessages = ({ item }: { item: Item }) => (
+    <View style={styles.Card}>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.details}>{item.details}</Text>
-      <Text style={styles.timestamp}>
-        {new Date(item.createdAt).toLocaleString()}
-      </Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Notifications</Text>
+      <Text style={styles.header}>Messages</Text>
       {error && <Text style={styles.error}>{error}</Text>}
       <FlatList
-        data={notifications}
-        renderItem={renderNotification}
+        data={messages}
+        renderItem={renderMessages}
         keyExtractor={(item) => item._id}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={fetchNotifications}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={fetchMessage} />
         }
         contentContainerStyle={styles.list}
         ListEmptyComponent={
           !refreshing && (
-            <Text style={styles.emptyText}>No notifications available.</Text>
+            <Text style={styles.emptyText}>No message available.</Text>
           )
         }
       />
@@ -125,7 +116,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: "center",
   },
-  notificationCard: {
+  Card: {
     backgroundColor: "#f9f9f9",
     padding: 16,
     borderRadius: 8,

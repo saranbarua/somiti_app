@@ -75,6 +75,16 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
+        name="message"
+        options={{
+          title: "Message",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.chat} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
