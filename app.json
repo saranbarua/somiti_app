@@ -2,7 +2,7 @@
   "expo": {
     "name": "Somiti",
     "slug": "Somiti",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -22,6 +22,7 @@
         "android.permission.RECEIVE_BOOT_COMPLETED"
       ],
       "useNextNotificationsApi": true,
+      "versionCode": 2,
       "package": "com.makeupcoders.somitiapp",
       "googleServicesFile": "./google-service.json"
     },
