@@ -6,7 +6,7 @@ export const onboarding = [
     id: 1,
     title: "The perfect Welfare is just a tap away!",
     description:
-      "Your journey begins with SOmiti. Find your ideal Welfare effortlessly.",
+      "Your journey begins with Chattogram Somiti. Find your ideal Welfare effortlessly.",
     image: images.onboarding,
   },
   {

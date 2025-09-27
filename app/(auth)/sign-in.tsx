@@ -74,7 +74,7 @@ const SignIn = () => {
 
   return (
     <View className="flex-1 bg-white justify-center px-6">
-      <Text className="text-3xl text-primary-100 font-rubik-Bangla text-center mb-8">
+      <Text className="text-3xl text-primary-100 font-rubik-Bangla text-center mb-3">
         চট্টগ্রাম সমিতি পূর্বাঞ্চল
       </Text>
       <Image

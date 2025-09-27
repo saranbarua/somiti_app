@@ -4,7 +4,7 @@ import onboarding3 from "@/assets/images/onboarding3.jpg";
 import avatar from "@/assets/images/avatar.png";
 import whiteGradient from "@/assets/images/white-gradient.png";
 import check from "@/assets/images/check.png";
-import SignInBanner from "@/assets/images/no-result.png";
+import SignInBanner from "@/assets/images/signIn.jpeg";
 import SignUpBanner from "@/assets/images/adaptive-icon.png";
 
 export default {
