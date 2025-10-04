@@ -22,7 +22,7 @@
         "android.permission.RECEIVE_BOOT_COMPLETED"
       ],
       "useNextNotificationsApi": true,
-      "versionCode": 4,
+      "versionCode": 5,
       "package": "com.makeupcoders.somitiapp",
       "googleServicesFile": "./google-service.json"
     },
