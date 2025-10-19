@@ -34,8 +34,13 @@ export default function MembershipCard() {
     }
 
     try {
+      // Use the canonical image URL when downloading (no cache-buster)
       const imageUrl = `https://chattogram-somiti.makeupcoders.com${profile?.memberCard}`;
-      const fileUri = `${FileSystem.cacheDirectory}membership-card.jpg`;
+      // expo-file-system types may not expose cacheDirectory in some setups, so
+      // cast to any and fall back to documentDirectory to be safe.
+      const fs: any = FileSystem;
+      const baseDir = fs.cacheDirectory || fs.documentDirectory || "";
+      const fileUri = `${baseDir}membership-card.jpg`;
 
       // Download the image to the file system
       const { uri } = await FileSystem.downloadAsync(imageUrl, fileUri);
@@ -58,7 +63,11 @@ export default function MembershipCard() {
         "Membership card has been downloaded to your gallery."
       );
     } catch (error) {
-      Alert.alert("Download error:");
+      console.error("Membership card download error:", error);
+      Alert.alert(
+        "Download error",
+        "Unable to download membership card. Please try again."
+      );
     }
   };
 
@@ -86,9 +95,12 @@ export default function MembershipCard() {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
+        {/* Append a cache-busting query parameter so the image is always fetched fresh */}
         <Image
           source={{
-            uri: `https://chattogram-somiti.makeupcoders.com${profile?.memberCard}`,
+            uri: `https://chattogram-somiti.makeupcoders.com${
+              profile?.memberCard
+            }?t=${Date.now()}`,
           }}
           className="w-[250px] h-[400px]"
           resizeMode="cover"

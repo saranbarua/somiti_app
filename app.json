@@ -21,7 +21,6 @@
         "android.permission.NOTIFICATIONS",
         "android.permission.RECEIVE_BOOT_COMPLETED"
       ],
-      "useNextNotificationsApi": true,
       "versionCode": 5,
       "package": "com.makeupcoders.somitiapp",
       "googleServicesFile": "./google-service.json"
@@ -69,7 +68,8 @@
           "defaultChannel": "default",
           "enableBackgroundRemoteNotifications": true
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
